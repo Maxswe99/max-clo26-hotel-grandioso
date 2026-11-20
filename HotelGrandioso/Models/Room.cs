@@ -11,16 +11,6 @@ public class Room
     public int PricePerNight { get; set; }
     public List<Booking> Bookings { get; set; } = new List<Booking>();
 
-    public Room(int roomTypeId, RoomType roomType, int roomNumber, int floor, int sizeM2, int pricePerNight)
-    {
-        RoomTypeId = roomTypeId;
-        RoomType = roomType;
-        RoomNumber = roomNumber;
-        Floor = floor;
-        SizeM2 = sizeM2;
-        PricePerNight = pricePerNight;
-    }
-
     public Room()
     {
         

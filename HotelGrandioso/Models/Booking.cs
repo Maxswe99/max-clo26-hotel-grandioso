@@ -9,15 +9,6 @@ public class Booking
     public int RoomId { get; set; }
     public Room Room { get; set; }
     public Guest Guest { get; set; }
-
-    public Booking(int guestId, int bookingId, DateTime checkIn, DateTime checkOut, int roomId)
-    {
-        GuestId = guestId;
-        BookingId = bookingId;
-        CheckIn = checkIn;
-        CheckOut = checkOut;
-        RoomId = roomId;
-    }
     
     public Booking()
     {
