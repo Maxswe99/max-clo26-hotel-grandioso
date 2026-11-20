@@ -1,6 +1,7 @@
 ﻿namespace HotelGrandioso.Data;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using HotelGrandioso.Models;
 
 public class HotelContext : DbContext
