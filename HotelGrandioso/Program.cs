@@ -37,8 +37,8 @@ while (hotel)
             Console.WriteLine("5. Avsluta");
             hotel = false;
             break;
-            default:
-                Console.WriteLine("Ogiltligt val");
-                break;
+        default:
+            Console.WriteLine("Ogiltigt val");
+            break;
     }
 }

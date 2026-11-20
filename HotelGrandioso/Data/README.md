@@ -7,3 +7,4 @@ Här ligger databaskopplingen.
 - **Serverdatabas:** starta med Docker eller använd en gratis onlineinstans. Beskriv hur i projektets README.
 
 Ingen ADO.NET. Använd EF Core eller MongoDB.
+
