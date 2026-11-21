@@ -21,7 +21,7 @@ DbSeeder.Seed(context);
 
 // Any() betyder att kontrollen bara lägger till startdata om tabellen är tom
 
-
+var rooms = repository.GetAllRooms();
 bool hotel = true;
 
 while (hotel)
@@ -38,7 +38,32 @@ while (hotel)
     switch (hotelChoice)
     {
         case "1":
-            Console.WriteLine("1. Boka rum");
+            Console.Write("Gästnamn: ");
+            string? guestName = Console.ReadLine();
+            
+            var guest = new Guest
+            {
+                Name = guestName ?? ""
+            };
+            
+            Console.Write("Incheckning (YYYY-MM-DD): ");
+            string? checkinTime = Console.ReadLine();
+            DateTime checkin = DateTime.Parse(checkinTime);
+            
+            Console.Write("Utcheckning (YYYY-MM-DD): ");
+            string? checkoutTime = Console.ReadLine();
+            DateTime checkout = DateTime.Parse(checkoutTime);
+            
+            Console.WriteLine("Välj rum:");
+
+            int listNumber = 1;
+            foreach (var room in rooms) 
+            { 
+                Console.WriteLine($"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
+                listNumber++;
+            }
+
+            
             break;
         case "2":
             Console.WriteLine("1. Boka rum");
@@ -49,7 +74,6 @@ while (hotel)
         case "4":
             Console.WriteLine("Visar alla lediga rum:");
             
-            var rooms = repository.GetAllRooms();
             foreach (var room in rooms)
             {
                 Console.WriteLine($"Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
