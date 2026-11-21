@@ -27,7 +27,7 @@ bool hotel = true;
 while (hotel)
 {
     Console.WriteLine("=== Hotel Grandioso ===");
-    Console.WriteLine("1. Boka rum");
+    Console.WriteLine("1. Boka rum"); //
     Console.WriteLine("2. Avboka");
     Console.WriteLine("3. Visa bokningar");
     Console.WriteLine("4. Visa lediga rum"); //
@@ -47,12 +47,24 @@ while (hotel)
             };
             
             Console.Write("Incheckning (YYYY-MM-DD): ");
-            string? checkinTime = Console.ReadLine();
-            DateTime checkin = DateTime.Parse(checkinTime);
-            
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkin))
+            {
+                Console.WriteLine("Ogiltigt datum.");
+                break;
+            }
+
             Console.Write("Utcheckning (YYYY-MM-DD): ");
-            string? checkoutTime = Console.ReadLine();
-            DateTime checkout = DateTime.Parse(checkoutTime);
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkout))
+            {
+                Console.WriteLine("Ogiltigt datum.");
+                break;
+            }
+
+            if (checkout <= checkin)
+            {
+                Console.WriteLine("Utcheckning måste vara efter incheckning.");
+                break;
+            }
             
             Console.WriteLine("Välj rum:");
 
@@ -62,7 +74,38 @@ while (hotel)
                 Console.WriteLine($"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
                 listNumber++;
             }
+            
+            Console.Write("Val: ");
+            string? roomChoice = Console.ReadLine();
+            
+            if (!int.TryParse(roomChoice, out int selectedChoice) || selectedChoice < 1 || selectedChoice > rooms.Count)
+            {
+                Console.WriteLine("Ogiltigt rumval.");
+                break;
+            }
 
+            var selectedRoom = rooms[selectedChoice - 1];
+            
+            // själva bokningen
+            var booking = new Booking
+            {
+                Guest = guest,
+                Room = selectedRoom,
+                CheckIn = checkin,
+                CheckOut = checkout
+            };
+
+            repository.AddBooking(booking);
+
+            Console.WriteLine("Bokningen är sparad.");
+            Console.WriteLine($"Du har valt rum {selectedRoom.RoomNumber}");
+            Console.WriteLine($"Typ: {selectedRoom.RoomType.Name}");
+            Console.WriteLine($"Storlek: {selectedRoom.SizeM2} m²");
+            Console.WriteLine($"Pris per natt: {selectedRoom.PricePerNight} kr");
+            Console.WriteLine($"Totalt pris: {repository.CalculateTotalPrice(booking)} kr");
+            
+            Console.WriteLine("Tryck på enter för att gå tillbaka");
+            Console.ReadLine();
             
             break;
         case "2":
