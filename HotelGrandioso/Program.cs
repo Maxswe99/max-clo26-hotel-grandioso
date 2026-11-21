@@ -81,7 +81,7 @@ while (hotel)
             
             if (!int.TryParse(roomChoice, out int selectedChoice) || selectedChoice < 1 || selectedChoice > rooms.Count)
             {
-                Console.WriteLine("Ogiltigt rumval.");
+                Console.WriteLine("Ogiltigt rums val.");
                 break;
             }
 
