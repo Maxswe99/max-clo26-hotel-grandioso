@@ -23,7 +23,7 @@ while (hotel)
     Console.WriteLine("1. Boka rum");
     Console.WriteLine("2. Avboka");
     Console.WriteLine("3. Visa bokningar");
-    Console.WriteLine("4. Visa lediga rum");
+    Console.WriteLine("4. Visa alla rum");
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj ett alternativ: ");
     string? hotelChoice = Console.ReadLine();
