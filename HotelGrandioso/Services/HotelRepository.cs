@@ -49,6 +49,6 @@ public class HotelRepository
     public int CalculateTotalPrice(Booking booking)
     {
         var nights = (booking.CheckOut - booking.CheckIn).Days;
-        return nights *= booking.Room.PricePerNight;
+        return nights * booking.Room.PricePerNight;
     }
 }
