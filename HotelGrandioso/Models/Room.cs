@@ -9,11 +9,6 @@ public class Room
     public int Floor { get; set; }
     public int SizeM2 { get; set; }
     public int PricePerNight { get; set; }
-    public List<Booking> Bookings { get; set; } = new List<Booking>();
-
-    public Room()
-    {
-        
-    }
+    public List<Booking> Bookings { get; set; } = new();
 }
 

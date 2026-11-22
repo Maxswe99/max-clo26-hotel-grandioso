@@ -9,9 +9,4 @@ public class Booking
     public int RoomId { get; set; }
     public Room Room { get; set; }
     public Guest Guest { get; set; }
-    
-    public Booking()
-    {
-        
-    }
 }
