@@ -22,7 +22,7 @@ DbSeeder.Seed(context);
 // Any() betyder att kontrollen bara lägger till startdata om tabellen är tom
 
 var rooms = repository.GetAllRooms();
-var bookings = repository.GetAllBookings();
+
 bool hotel = true;
 
 while (hotel)
@@ -39,14 +39,15 @@ while (hotel)
     switch (hotelChoice)
     {
         case "1":
+        {
             Console.Write("Gästnamn: ");
             string? guestName = Console.ReadLine();
-            
+
             var guest = new Guest
             {
                 Name = guestName ?? ""
             };
-            
+
             Console.Write("Incheckning (YYYY-MM-DD): ");
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkin))
             {
@@ -66,19 +67,20 @@ while (hotel)
                 Console.WriteLine("Utcheckning måste vara efter incheckning.");
                 break;
             }
-            
+
             Console.WriteLine("Välj rum:");
 
             int listNumber = 1;
-            foreach (var room in rooms) 
-            { 
-                Console.WriteLine($"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
+            foreach (var room in rooms)
+            {
+                Console.WriteLine(
+                    $"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
                 listNumber++;
             }
-            
+
             Console.Write("Val: ");
             string? roomChoice = Console.ReadLine();
-            
+
             if (!int.TryParse(roomChoice, out int selectedChoice) || selectedChoice < 1 || selectedChoice > rooms.Count)
             {
                 Console.WriteLine("Ogiltigt rums val.");
@@ -86,7 +88,7 @@ while (hotel)
             }
 
             var selectedRoom = rooms[selectedChoice - 1];
-            
+
             // själva bokningen
             var booking = new Booking
             {
@@ -104,16 +106,74 @@ while (hotel)
             Console.WriteLine($"Storlek: {selectedRoom.SizeM2} m²");
             Console.WriteLine($"Pris per natt: {selectedRoom.PricePerNight} kr");
             Console.WriteLine($"Totalt pris: {repository.CalculateTotalPrice(booking)} kr");
-            
+
             Console.WriteLine("Tryck på enter för att gå tillbaka");
             Console.ReadLine();
-            
+
             break;
+        }
         case "2":
-            Console.WriteLine("1. Boka rum");
+        {
+            var bookings = repository.GetAllBookings();
+
+            if (bookings.Count == 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Det finns inga bokningar att avboka.");
+                Console.WriteLine("Tryck enter för att gå tillbaka till menyn");
+                Console.ReadLine();
+                break;
+            }
+
+            foreach (var reservation in bookings)
+            {
+                Console.WriteLine($"Boknings-ID: {reservation.BookingId}");
+                Console.WriteLine($"Gäst: {reservation.Guest.Name}");
+                Console.WriteLine($"Rum: {reservation.Room.RoomNumber}");
+                Console.WriteLine();
+            }
+
+            Console.Write("Ange boknings-ID att avboka: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int bookingId))
+            {
+                Console.WriteLine("Ogiltigt boknings-ID.");
+                break;
+            }
+
+            Booking? bookingToDelete = null;
+
+            foreach (var booked in bookings)
+            {
+                if (booked.BookingId == bookingId)
+                {
+                    bookingToDelete = booked;
+                    break;
+                }
+            }
+
+            if (bookingToDelete == null)
+            {
+                Console.WriteLine("Bokningen hittades inte.");
+                break;
+            }
+
+            repository.DeleteBooking(bookingId);
+            Console.WriteLine("Bokningen har avbokats.");
+
             break;
+        }
         case "3":
-            Console.WriteLine("3. Visa bokningar");
+        {
+            var bookings = repository.GetAllBookings();
+            if (bookings.Count == 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Det finns inga aktiva bokningar.");
+                Console.WriteLine("Tryck enter för att gå tillbaka till menyn");
+                Console.ReadLine();
+                break;
+            }
 
             foreach (var showBooking in bookings)
             {
@@ -125,24 +185,32 @@ while (hotel)
                 Console.WriteLine($"Pris: {repository.CalculateTotalPrice(showBooking)} kr");
                 Console.WriteLine();
             }
-            
+
             break;
+        }
         case "4":
+        {
             Console.WriteLine("Visar alla lediga rum:");
-            
+
             foreach (var room in rooms)
             {
-                Console.WriteLine($"Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
+                Console.WriteLine(
+                    $"Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
             }
 
             Console.WriteLine("Tryck på enter för att gå tillbaka");
             Console.ReadLine();
             break;
+        }
         case "5":
+        {
             hotel = false;
             break;
+        }
         default:
+        {
             Console.WriteLine("Ogiltigt val");
             break;
+        }
     }
 }
