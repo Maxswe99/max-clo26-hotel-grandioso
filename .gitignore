@@ -3,6 +3,7 @@ bin/
 obj/
 *.user
 .vs/
+.idea/
 
 # Hemligheter: connectionstrings och lösenord ska INTE in i koden
 .env
@@ -11,3 +12,8 @@ obj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Lokala databaser
+*.db
+*.db-shm
+*.db-wal
