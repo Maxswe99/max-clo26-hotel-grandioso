@@ -1,0 +1,69 @@
+﻿@startuml
+
+skinparam classAttributeIconSize 0
+
+package "HotelGrandioso.Models" {
+    class Guest {
+        +int Id
+        +string Name
+        +List<Booking> Bookings
+    }
+
+    class Booking {
+        +int GuestId
+        +int BookingId
+        +DateTime CheckIn
+        +DateTime CheckOut
+        +int RoomId
+        +Room Room
+        +Guest Guest
+    }
+
+    class Room {
+        +int RoomId
+        +int RoomTypeId
+        +RoomType RoomType
+        +int RoomNumber
+        +int Floor
+        +int SizeM2
+        +int PricePerNight
+        +List<Booking> Bookings
+    }
+
+    class RoomType {
+        +int RoomTypeId
+        +string Name
+        +string Description
+        +List<Room> Rooms
+    }
+}
+
+package "HotelGrandioso.Data" {
+    class HotelContext {
+        +DbSet<Room> Rooms
+        +DbSet<RoomType> RoomTypes
+        +DbSet<Guest> Guests
+        +DbSet<Booking> Bookings
+    }
+}
+
+package "HotelGrandioso.Services" {
+    class HotelRepository {
+        +GetAllRooms() : List<Room>
+        +GetAllBookings() : List<Booking>
+        +AddBooking(booking : Booking) : void
+        +DeleteBooking(bookingId : int) : void
+        +CalculateTotalPrice(booking : Booking) : int
+    }
+}
+
+Guest "1" -- "0..*" Booking : has
+Room "1" -- "0..*" Booking : booked
+RoomType "1" -- "0..*" Room : contains
+HotelContext ..> Guest
+HotelContext ..> Booking
+HotelContext ..> Room
+HotelContext ..> RoomType
+HotelRepository --> HotelContext : uses
+
+@enduml
