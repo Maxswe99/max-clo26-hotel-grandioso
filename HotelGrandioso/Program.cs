@@ -1,11 +1,7 @@
-// Startpunkt för Hotel Grandioso.
-// Här kopplar du ihop databasen och menyn.
-
 using Microsoft.EntityFrameworkCore;
 using HotelGrandioso.Data;
 using HotelGrandioso.Models;
 using HotelGrandioso.Services;
-
 
 
 using var context = new HotelContext();
@@ -14,10 +10,6 @@ var repository = new HotelRepository(context);
 
 DbSeeder.Seed(context);
 
-
-// TODO: Skapa databasen med EF Core (se Data/README.md)
-
-// TODO: Starta menyn (Boka rum, Avboka, Visa bokningar, Visa lediga rum, Avsluta)
 
 // Any() betyder att kontrollen bara lägger till startdata om tabellen är tom
 
@@ -28,11 +20,11 @@ bool hotel = true;
 while (hotel)
 {
     Console.WriteLine("=== Hotel Grandioso ===");
-    Console.WriteLine("1. Boka rum"); //
+    Console.WriteLine("1. Boka rum");
     Console.WriteLine("2. Avboka");
-    Console.WriteLine("3. Visa bokningar"); //
-    Console.WriteLine("4. Visa lediga rum"); //
-    Console.WriteLine("5. Avsluta"); //
+    Console.WriteLine("3. Visa bokningar");
+    Console.WriteLine("4. Visa lediga rum");
+    Console.WriteLine("5. Avsluta");
     Console.Write("Välj ett alternativ: ");
     string? hotelChoice = Console.ReadLine();
     
@@ -73,8 +65,7 @@ while (hotel)
             int listNumber = 1;
             foreach (var room in rooms)
             {
-                Console.WriteLine(
-                    $"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
+                Console.WriteLine($"{listNumber}. Rum: {room.RoomNumber}, Typ: {room.RoomType.Name}, Storlek: {room.SizeM2} (m2), Kostnad: {room.PricePerNight} kr / natt.");
                 listNumber++;
             }
 
@@ -124,7 +115,9 @@ while (hotel)
                 Console.ReadLine();
                 break;
             }
-
+            
+            Console.WriteLine();
+            
             foreach (var reservation in bookings)
             {
                 Console.WriteLine($"Boknings-ID: {reservation.BookingId}");
@@ -160,7 +153,9 @@ while (hotel)
 
             repository.DeleteBooking(bookingId);
             Console.WriteLine("Bokningen har avbokats.");
-
+            Console.WriteLine();
+            Console.WriteLine("Tryck enter för att gå tillbaka till menyn");
+            Console.ReadLine();
             break;
         }
         case "3":
@@ -175,6 +170,8 @@ while (hotel)
                 break;
             }
 
+            Console.WriteLine();
+            
             foreach (var showBooking in bookings)
             {
                 Console.WriteLine($"Boknings-ID: {showBooking.BookingId}");
@@ -185,7 +182,8 @@ while (hotel)
                 Console.WriteLine($"Pris: {repository.CalculateTotalPrice(showBooking)} kr");
                 Console.WriteLine();
             }
-
+            Console.WriteLine("Tryck enter för att gå tillbaka till menyn");
+            Console.ReadLine();
             break;
         }
         case "4":
